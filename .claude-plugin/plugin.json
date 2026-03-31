@@ -1,0 +1,37 @@
+{
+  "name": "claude-code-fintech-stack",
+  "version": "1.0.0",
+  "description": "Claude Code plugin for fintech/payment stack: PHP/Laravel, Go, ISO 8583, Vue/React/Vite, Node.js, Bun, and AI integration",
+  "author": {
+    "name": "PuvaanRaaj",
+    "url": "https://github.com/PuvaanRaaj"
+  },
+  "homepage": "https://github.com/PuvaanRaaj/claude-code-fintech-stack",
+  "repository": "https://github.com/PuvaanRaaj/claude-code-fintech-stack",
+  "license": "MIT",
+  "keywords": ["php", "laravel", "go", "iso8583", "vue", "react", "vite", "nodejs", "bun", "pci-dss", "fintech", "payment"],
+  "agents": [
+    "agents/php-laravel-agent.md",
+    "agents/php-laravel-agent.json",
+    "agents/go-agent.md",
+    "agents/go-agent.json",
+    "agents/iso8583-agent.md",
+    "agents/iso8583-agent.json",
+    "agents/frontend-agent.md",
+    "agents/frontend-agent.json",
+    "agents/node-bun-agent.md",
+    "agents/node-bun-agent.json",
+    "agents/ai-integration-agent.md",
+    "agents/ai-integration-agent.json"
+  ],
+  "skills": [
+    ".claude/skills/iso8583-parse",
+    ".claude/skills/go-test",
+    ".claude/skills/vue-component",
+    ".claude/skills/bun-run",
+    ".claude/skills/ai-prompt-review",
+    ".claude/skills/payment-sign",
+    ".claude/skills/db-migrate",
+    ".claude/skills/go-lint"
+  ]
+}

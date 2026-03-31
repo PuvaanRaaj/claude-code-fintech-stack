@@ -1,0 +1,11 @@
+{
+  "name": "ai-integration-agent",
+  "description": "Claude API / Anthropic SDK specialist: prompt engineering, MCP tool design, streaming responses, token budgets, context management, AI-safe patterns for payment domain",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.ts", "**/*.js", "**/*.py"],
+    "keywords": ["anthropic", "claude api", "MCP", "system prompt", "streaming", "tool use", "messages.create", "claude-sonnet", "claude-opus", "AI integration", "agent sdk"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep"],
+  "model": "claude-sonnet-4-6"
+}

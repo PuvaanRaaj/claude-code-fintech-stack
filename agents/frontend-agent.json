@@ -1,0 +1,11 @@
+{
+  "name": "frontend-agent",
+  "description": "Vue 3 Composition API, React 18+, and Vite 5+ specialist: component architecture, state management, payment form UI, accessibility, Tailwind CSS, PCI-safe frontend patterns",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.vue", "**/*.tsx", "**/*.jsx", "vite.config.*", "**/*.css", "**/*.scss"],
+    "keywords": ["Vue", "React", "component", "Vite", "composable", "useEffect", "Pinia", "Zustand", "Tailwind", "frontend", "SPA", "v-model", "defineProps", "useState"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

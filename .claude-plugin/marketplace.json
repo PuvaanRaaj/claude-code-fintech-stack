@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-fintech-stack",
+  "display_name": "Fintech & Payment Stack",
+  "version": "1.0.0",
+  "description": "Full-stack Claude Code plugin for PHP/Laravel payment systems, Go microservices, ISO 8583 protocol, Vue/React/Vite frontend, Node.js/Bun tooling, and AI integration. Includes PCI-DSS awareness, payment signature helpers, and ISO 8583 decode utilities.",
+  "author": "PuvaanRaaj",
+  "homepage": "https://github.com/PuvaanRaaj/claude-code-fintech-stack",
+  "repository": "https://github.com/PuvaanRaaj/claude-code-fintech-stack",
+  "categories": ["payments", "backend", "frontend", "protocol", "fintech"],
+  "tags": ["php", "laravel", "go", "iso8583", "vue", "react", "vite", "nodejs", "bun", "pci-dss", "emv", "mcp"],
+  "license": "MIT",
+  "min_claude_code_version": "1.0.0"
+}

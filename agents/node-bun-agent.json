@@ -1,0 +1,11 @@
+{
+  "name": "node-bun-agent",
+  "description": "Node.js 22 and Bun 1.x specialist: ESM modules, CLI tools with Commander.js, MCP server development, TypeScript, npm/bun package management",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.ts", "package.json", "bunfig.toml", "tsconfig.json", "wrangler.toml", "bun.lock"],
+    "keywords": ["Node", "Bun", "npm", "typescript", "ESM", "MCP server", "Commander", "Cloudflare Worker", "bun run", "bun install", "bun test"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

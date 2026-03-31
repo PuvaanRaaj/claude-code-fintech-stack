@@ -1,0 +1,16 @@
+{
+  "name": "php-laravel-agent",
+  "description": "PHP 8.3+ / Laravel 11+ specialist: controllers, services, FormRequests, Eloquent, queues, PCI-compliant payment endpoints",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.php", "composer.json", "phpunit.xml", "phpunit.xml.dist", "routes/**", "app/**", "database/**"],
+    "keywords": ["laravel", "artisan", "eloquent", "phpunit", "pint", "controller", "middleware", "migration", "seeder", "formrequest", "service provider", "composer"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6",
+  "memory_files": [
+    "memory/core/conventions.md",
+    "memory/core/services.md",
+    "memory/core/gotchas.md"
+  ]
+}

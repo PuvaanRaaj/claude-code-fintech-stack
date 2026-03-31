@@ -1,0 +1,11 @@
+{
+  "name": "iso8583-agent",
+  "description": "ISO 8583 payment protocol specialist: bitmap construction, field encoding/decoding, EMV TLV parsing, MTI classification, scheme-specific field requirements (Visa, Mastercard, UnionPay, local debit)",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/iso8583*", "**/bitmap*", "**/socket*", "**/payment_host*", "**/card_present*"],
+    "keywords": ["ISO 8583", "ISO8583", "bitmap", "MTI", "bit 55", "EMV", "TLV", "purchase request", "authorization", "reversal", "CP API", "socket send", "field 55", "track data", "STAN", "retrieval reference"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep"],
+  "model": "claude-sonnet-4-6"
+}

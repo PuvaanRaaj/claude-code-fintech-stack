@@ -1,0 +1,35 @@
+{
+  "hooks": [
+    {
+      "name": "block-pci-data",
+      "description": "Block writes containing raw PAN, CVV, track data, or PIN block patterns",
+      "event": "PreToolUse",
+      "tools": ["Write", "Edit"],
+      "script": "hooks/block-pci-data.sh"
+    },
+    {
+      "name": "lint-php-on-save",
+      "description": "Run Laravel Pint on PHP files after write",
+      "event": "PostToolUse",
+      "tools": ["Write", "Edit"],
+      "file_pattern": "**/*.php",
+      "script": "hooks/lint-on-save-php.sh"
+    },
+    {
+      "name": "lint-go-on-save",
+      "description": "Run gofmt on Go files after write",
+      "event": "PostToolUse",
+      "tools": ["Write", "Edit"],
+      "file_pattern": "**/*.go",
+      "script": "hooks/lint-on-save-go.sh"
+    },
+    {
+      "name": "lint-js-on-save",
+      "description": "Run ESLint on JS/TS/Vue files after write",
+      "event": "PostToolUse",
+      "tools": ["Write", "Edit"],
+      "file_pattern": "**/*.{ts,tsx,vue,js,jsx}",
+      "script": "hooks/lint-on-save-js.sh"
+    }
+  ]
+}

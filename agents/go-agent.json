@@ -1,0 +1,11 @@
+{
+  "name": "go-agent",
+  "description": "Go 1.22+ specialist: CLI tools with Cobra, TCP socket clients for payment protocols, concurrent workers, gofmt/golangci-lint, module management",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.go", "go.mod", "go.sum", "Makefile"],
+    "keywords": ["golang", "cobra", "goroutine", "channel", "tcp", "socket", "gofmt", "go build", "go test", "go mod", "makefile"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}
