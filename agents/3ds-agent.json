@@ -1,0 +1,11 @@
+{
+  "name": "3ds-agent",
+  "description": "3DS2 authentication specialist. Activates on 3DS integration questions, authentication failure debugging, ECI/CAVV interpretation, ACS connectivity issues, and frictionless vs challenge flow optimisation.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["app/Services/ThreeDS*", "app/Http/Controllers/*3DS*", "app/Http/Controllers/*Auth*"],
+    "keywords": ["3DS", "3D Secure", "3ds2", "ACS", "DS", "directory server", "CAVV", "ECI", "challenge flow", "frictionless", "transStatus", "AReq", "ARes", "CReq", "CRes", "authentication failed", "liability shift", "dsTransId", "acsTransId", "threeds"]
+  },
+  "allowed_tools": ["Read", "Grep", "Bash"],
+  "model": "claude-sonnet-4-6"
+}

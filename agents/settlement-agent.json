@@ -1,0 +1,11 @@
+{
+  "name": "settlement-agent",
+  "description": "Payment settlement specialist. Activates on settlement file generation, T+1 batch processing, acquirer report reconciliation, and mismatch investigation. Produces settlement batches, validates counts and amounts against the transaction DB, and flags variances.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["app/Console/Commands/*Settlement*", "app/Services/Settlement*", "storage/settlements/**"],
+    "keywords": ["settlement", "reconcile settlements", "settlement file", "T+1", "acquirer report", "mismatch", "variance", "batch", "cutoff", "settled", "resubmit", "STAN", "MDR", "net settlement", "gross settlement"]
+  },
+  "allowed_tools": ["Read", "Bash", "Grep", "Write"],
+  "model": "claude-sonnet-4-6"
+}

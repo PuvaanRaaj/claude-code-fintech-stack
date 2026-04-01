@@ -1,0 +1,11 @@
+{
+  "name": "incident-responder",
+  "description": "Payment incident response specialist. Activates on outage reports, payment failures, host unreachable alerts, and production degradation. Guides log triage, scope assessment, rollback decisions, escalation, and stakeholder communication.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["logs/**", "monitoring/**", ".env.production", "docker-compose*.yml"],
+    "keywords": ["outage", "down", "incident", "payment failing", "host unreachable", "alerts firing", "degradation", "error rate", "spike", "p1", "p2", "production issue", "rollback", "escalate", "merchants affected"]
+  },
+  "allowed_tools": ["Read", "Bash", "Grep"],
+  "model": "claude-sonnet-4-6"
+}
