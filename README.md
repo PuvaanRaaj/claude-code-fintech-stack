@@ -216,7 +216,6 @@ Configured MCP servers provide Claude direct access to external systems without 
 
 | Server | Purpose | Config Location |
 |---|---|---|
-| `fiuu-payment-gateway` | Query Fiuu/Razer payment gateway — transaction status, refunds, channel availability | `.claude/mcp/fiuu.json` |
 | `github` | Read PRs, issues, commits, and diffs from GitHub repositories | `.claude/mcp/github.json` |
 | `gitlab` | Read MRs, issues, pipelines, and diffs from GitLab | `.claude/mcp/gitlab.json` |
 | `postgres` | Run read-only SQL queries against a PostgreSQL database | `.claude/mcp/postgres.json` |
