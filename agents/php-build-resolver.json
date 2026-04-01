@@ -1,0 +1,11 @@
+{
+  "name": "php-build-resolver",
+  "description": "PHP/Composer/Laravel build error specialist. Activates on composer errors, artisan failures, PHP parse errors, config cache problems, and migration failures.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["composer.json", "composer.lock", "bootstrap/cache/**", ".env", ".env.example"],
+    "keywords": ["composer require", "composer install", "composer update", "php artisan", "artisan migrate", "artisan config:cache", "php parse error", "class not found", "autoload", "PHP version mismatch", "laravel error", "config cached", "env missing"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

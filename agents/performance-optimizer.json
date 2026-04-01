@@ -1,0 +1,11 @@
+{
+  "name": "performance-optimizer",
+  "description": "Performance analysis and optimization specialist for Laravel, Go, and JavaScript. Activates on slow queries, N+1 problems, bundle size issues, or explicit performance requests.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.php", "**/*.go", "**/*.ts", "**/*.vue"],
+    "keywords": ["slow", "performance", "optimize", "N+1", "query time", "latency", "throughput", "bundle size", "memory usage", "pprof", "profiling", "cache hit", "Redis cache", "connection pool", "bottleneck"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

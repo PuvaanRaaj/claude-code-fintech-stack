@@ -1,0 +1,11 @@
+{
+  "name": "database-reviewer",
+  "description": "Database design and query specialist for Laravel/Eloquent and raw SQL. Activates on migration files, Eloquent queries, N+1 concerns, financial data types, and PCI data retention.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["database/migrations/**/*.php", "app/Models/**/*.php", "app/Repositories/**/*.php", "**/*Repository*.php"],
+    "keywords": ["migration", "eloquent", "N+1", "eager load", "index", "query", "DECIMAL", "FLOAT", "financial data type", "database design", "schema", "transaction table", "PCI retention", "rollback migration"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob", "Bash"],
+  "model": "claude-sonnet-4-6"
+}

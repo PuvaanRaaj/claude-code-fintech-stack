@@ -1,0 +1,11 @@
+{
+  "name": "code-reviewer",
+  "description": "Senior code reviewer for PHP, Go, and JavaScript. MUST BE USED after every code change. Reviews for quality, security, PCI-DSS compliance, idempotency, and payment-specific correctness.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.php", "**/*.go", "**/*.ts", "**/*.vue", "**/*.js"],
+    "keywords": ["review", "code review", "check my code", "is this correct", "before I commit", "look at this", "any issues", "review changes"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob", "Bash"],
+  "model": "claude-sonnet-4-6"
+}

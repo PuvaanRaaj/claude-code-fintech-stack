@@ -1,0 +1,11 @@
+{
+  "name": "refactor-cleaner",
+  "description": "Code refactoring specialist for PHP, Go, and Vue/JS. Cleans technical debt, reduces duplication, and improves readability without changing external behaviour.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["**/*.php", "**/*.go", "**/*.vue", "**/*.ts"],
+    "keywords": ["refactor", "clean up", "technical debt", "duplicate code", "extract", "split controller", "large class", "large function", "God class", "too complex", "simplify", "extract service", "extract composable"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "chief-of-staff",
+  "description": "High-level task orchestrator for complex multi-agent workflows. Breaks large features into subtasks and delegates to the correct specialist agents in priority order.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["CLAUDE.md", "memory/core/**"],
+    "keywords": ["orchestrate", "big task", "complex feature", "where do I start", "what order", "delegate", "multi-step", "decompose", "break down this task", "assign to agent", "priority order", "dependency map"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob"],
+  "model": "claude-opus-4-5"
+}

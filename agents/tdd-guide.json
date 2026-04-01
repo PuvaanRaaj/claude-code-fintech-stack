@@ -1,0 +1,11 @@
+{
+  "name": "tdd-guide",
+  "description": "Test-driven development guide for PHP/Laravel, Go, and JavaScript. Activates when writing new features, fixing bugs, or when test coverage needs to be established.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["tests/**/*.php", "**/*_test.go", "**/*.test.ts", "**/*.spec.ts", "phpunit.xml", "phpunit.xml.dist", "vitest.config.*"],
+    "keywords": ["TDD", "test first", "write test", "unit test", "feature test", "coverage", "mock", "stub", "Red Green Refactor", "failing test", "test suite", "PHPUnit", "Vitest", "go test"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

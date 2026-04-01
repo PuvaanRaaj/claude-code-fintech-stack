@@ -1,0 +1,11 @@
+{
+  "name": "planner",
+  "description": "Expert planning specialist for complex features, payment integrations, and architectural changes. Use PROACTIVELY when user says implement X, add feature Y, how do I approach Z, or integrate a new payment scheme.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["CLAUDE.md", "memory/**/*.md", "docs/**/*.md"],
+    "keywords": ["implement", "add feature", "how do I approach", "plan", "integrate", "build", "create", "design", "architect", "payment scheme", "new endpoint", "rollout", "migration plan"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob"],
+  "model": "claude-opus-4-5"
+}

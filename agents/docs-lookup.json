@@ -1,0 +1,11 @@
+{
+  "name": "docs-lookup",
+  "description": "Documentation research agent. Looks up Laravel docs, Go stdlib, ISO 8583 field specs, and payment scheme documentation. Use when unsure about correct API, field encoding, or spec behaviour.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": [],
+    "keywords": ["what does Laravel", "check the docs", "ISO 8583 field", "bit field", "what is field 55", "Go stdlib", "pkg.go.dev", "look up", "documentation", "spec says", "payment scheme docs", "Visa spec", "Mastercard spec", "EMV spec"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob", "Bash"],
+  "model": "claude-sonnet-4-6"
+}

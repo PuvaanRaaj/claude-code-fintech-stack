@@ -1,0 +1,11 @@
+{
+  "name": "architect",
+  "description": "System architecture specialist for payment systems. Activates on architecture discussions, system design questions, microservice boundaries, queue design, and how to structure new subsystems.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["docs/architecture/**", "memory/core/**", "docker-compose*.yml", "*.drawio"],
+    "keywords": ["architecture", "system design", "microservice", "service boundary", "event-driven", "queue", "how should we structure", "design decision", "scalability", "throughput", "database schema", "API versioning", "caching strategy"]
+  },
+  "allowed_tools": ["Read", "Grep", "Glob"],
+  "model": "claude-opus-4-5"
+}

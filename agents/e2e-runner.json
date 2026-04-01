@@ -1,0 +1,11 @@
+{
+  "name": "e2e-runner",
+  "description": "End-to-end test specialist using Playwright. Activates when writing or debugging E2E tests for payment flows, form submissions, and redirect sequences.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["e2e/**/*.ts", "tests/e2e/**/*.ts", "playwright.config.*", "**/*.spec.ts"],
+    "keywords": ["E2E", "end to end", "playwright", "browser test", "payment flow test", "checkout test", "redirect flow", "webhook simulation", "test card", "form submission test"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

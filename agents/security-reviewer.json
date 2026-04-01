@@ -1,0 +1,11 @@
+{
+  "name": "security-reviewer",
+  "description": "Security and PCI-DSS specialist. Use after writing payment code, auth code, API endpoints, or any code that touches cardholder data, PIN, or sensitive credentials.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["app/Http/Controllers/**/*.php", "app/Services/Payment*.php", "**/*Auth*.php", "**/*Payment*.php", "**/*Card*.php", "routes/api.php"],
+    "keywords": ["PCI", "PCI-DSS", "security review", "cardholder", "encryption", "auth", "authentication", "authorization", "token", "PIN", "CVV", "PAN", "OWASP", "vulnerability", "dependency audit", "access control"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

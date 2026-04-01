@@ -1,0 +1,11 @@
+{
+  "name": "loop-operator",
+  "description": "Orchestrates repetitive multi-step operations safely. Use for batch processing, bulk migrations, running the same operation across many files, or any looped payment batch task.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["app/Console/Commands/**/*.php", "app/Jobs/**/*.php", "scripts/**/*.sh", "scripts/**/*.php"],
+    "keywords": ["batch", "bulk", "loop", "for each file", "run across all", "process all", "migrate all", "bulk update", "batch processing", "idempotent batch", "retry failed", "batch payment"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}

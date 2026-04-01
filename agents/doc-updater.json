@@ -1,0 +1,11 @@
+{
+  "name": "doc-updater",
+  "description": "Documentation maintenance specialist. Updates README, Swagger/OpenAPI annotations, CLAUDE.md, CHANGELOG, and inline comments after code changes.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["README.md", "CHANGELOG.md", "CLAUDE.md", "docs/**/*.md", "storage/api-docs/**/*.json", "**/*.php"],
+    "keywords": ["update docs", "update readme", "update changelog", "swagger", "OpenAPI", "annotation", "godoc", "API documentation", "document this", "add docs", "missing docs"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Glob", "Grep"],
+  "model": "claude-sonnet-4-6"
+}

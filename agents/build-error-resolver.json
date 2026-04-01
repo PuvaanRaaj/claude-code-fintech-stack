@@ -1,0 +1,11 @@
+{
+  "name": "build-error-resolver",
+  "description": "Build error specialist for PHP/Composer, Go modules, npm/Bun, and Docker. Activates when composer install fails, go build fails, npm/bun errors occur, or CI pipeline breaks.",
+  "version": "1.0.0",
+  "triggers": {
+    "file_patterns": ["composer.json", "composer.lock", "go.mod", "go.sum", "package.json", "bun.lockb", "Dockerfile", ".github/workflows/**/*.yml"],
+    "keywords": ["composer install", "composer update", "go build", "go mod", "npm install", "bun install", "bun add", "build failed", "dependency conflict", "autoload", "CI failed", "docker build", "artisan error"]
+  },
+  "allowed_tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+  "model": "claude-sonnet-4-6"
+}
