@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-fintech-stack — Battle-tested Claude Code plugin for fintech</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-0: #05080C;
+  --bg-1: #080D14;
+  --bg-2: #0C1420;
+  --bg-3: #101B2B;
+  --bg-card: #0E1624;
+  --bg-card-h: #142034;
+  --border: #1A2B40;
+  --border-h: #2A4060;
+  --text-0: #EDE0C4;
+  --text-1: #A89F8C;
+  --text-2: #5E6A7A;
+  --amber: #F59E0B;
+  --amber-d: #B8750A;
+  --amber-glow: rgba(245,158,11,0.12);
+  --amber-glow2: rgba(245,158,11,0.06);
+  --green: #22D3A0;
+  --blue: #4A9EFF;
+  --purple: #A78BFA;
+  --red: #F87171;
+  --font-mono: 'SF Mono','Menlo','Monaco','Cascadia Code','Fira Code','Courier New',monospace;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --r: 6px;
+  --r-lg: 10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Dot grid bg */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(245,158,11,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-1); }
+::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber-d); }
+
+/* ─── HERO ─────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 80px 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(245,158,11,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber-d);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 28px;
+  background: var(--amber-glow2);
+  animation: fadeInDown 0.6s ease both;
+}
+
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  animation: fadeInDown 0.6s 0.1s ease both;
+}
+
+h1 .logo-bracket {
+  color: var(--amber);
+  opacity: 0.7;
+}
+
+h1 .logo-name {
+  color: var(--text-0);
+}
+
+h1 .logo-accent {
+  color: var(--amber);
+}
+
+.hero-tagline {
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--text-1);
+  margin-bottom: 12px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  animation: fadeInDown 0.6s 0.15s ease both;
+}
+
+.hero-stack {
+  font-size: 12px;
+  color: var(--text-2);
+  letter-spacing: 0.08em;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.6s 0.2s ease both;
+}
+
+.hero-stack span {
+  color: var(--amber-d);
+  margin: 0 6px;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.6s 0.25s ease both;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Install */
+.install-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 680px;
+  animation: fadeInDown 0.6s 0.3s ease both;
+}
+
+.install-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 18px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.install-box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--amber);
+}
+
+.install-prompt {
+  color: var(--amber);
+  font-size: 13px;
+  user-select: none;
+}
+
+.install-cmd {
+  color: var(--text-0);
+  font-size: 13px;
+  flex: 1;
+  word-break: break-all;
+}
+
+.btn-copy {
+  background: var(--amber-glow);
+  border: 1px solid var(--amber-d);
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-copy:hover {
+  background: var(--amber);
+  color: var(--bg-0);
+}
+
+/* ─── NAV ───────────────────────────────────────────────── */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(5,8,12,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+  top: 1px;
+}
+
+.nav-tab:hover { color: var(--text-1); }
+
+.nav-tab.active {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+.nav-count {
+  background: var(--bg-3);
+  color: var(--text-2);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.nav-tab.active .nav-count {
+  background: var(--amber-glow);
+  color: var(--amber);
+  border-color: var(--amber-d);
+}
+
+/* ─── MAIN CONTENT ──────────────────────────────────────── */
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+/* ─── SEARCH ────────────────────────────────────────────── */
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 16px;
+  flex: 1;
+  max-width: 400px;
+  transition: border-color 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: var(--amber-d);
+  background: var(--bg-3);
+}
+
+.search-icon {
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.search-input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-0);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  width: 100%;
+}
+
+.search-input::placeholder { color: var(--text-2); }
+
+/* Filter buttons */
+.filter-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover { color: var(--text-1); border-color: var(--border-h); }
+
+.filter-btn.active {
+  background: var(--amber-glow);
+  border-color: var(--amber-d);
+  color: var(--amber);
+}
+
+/* Results count */
+.results-count {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+}
+
+.results-count b { color: var(--amber); }
+
+/* ─── AGENT CARDS ───────────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  cursor: default;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--border));
+  transition: background 0.25s;
+}
+
+.card:hover {
+  background: var(--bg-card-h);
+  border-color: var(--border-h);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--border-h);
+}
+
+.card:hover::before {
+  background: var(--card-accent, var(--amber-d));
+}
+
+.card[data-cat="Language Specialist"] { --card-accent: var(--blue); }
+.card[data-cat="Domain Expert"] { --card-accent: var(--amber); }
+.card[data-cat="Process Orchestrator"] { --card-accent: var(--green); }
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+  letter-spacing: 0.02em;
+}
+
+.badge {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.badge-lang {
+  background: rgba(74,158,255,0.12);
+  color: var(--blue);
+  border: 1px solid rgba(74,158,255,0.25);
+}
+
+.badge-domain {
+  background: var(--amber-glow);
+  color: var(--amber);
+  border: 1px solid rgba(245,158,11,0.25);
+}
+
+.badge-proc {
+  background: rgba(34,211,160,0.1);
+  color: var(--green);
+  border: 1px solid rgba(34,211,160,0.25);
+}
+
+.card-desc {
+  font-size: 12px;
+  color: var(--text-1);
+  line-height: 1.65;
+}
+
+/* ─── SKILL CARDS ───────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+
+.skill-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.skill-card::after {
+  content: 'AUTO';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  border: 1px solid rgba(34,211,160,0.3);
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(34,211,160,0.08);
+}
+
+.skill-card:hover {
+  background: var(--bg-card-h);
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(34,211,160,0.08);
+}
+
+.skill-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-0);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.skill-name::before {
+  content: '⚡ ';
+  font-size: 12px;
+}
+
+.skill-desc {
+  font-size: 12px;
+  color: var(--text-1);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.trigger-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+
+.triggers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.trigger-tag {
+  font-size: 11px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.trigger-tag::before { content: '"'; color: var(--amber); }
+.trigger-tag::after { content: '"'; color: var(--amber); }
+
+/* ─── COMMANDS ──────────────────────────────────────────── */
+.cmd-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.cmd-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.cmd-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.cmd-group-icon {
+  font-size: 16px;
+}
+
+.cmd-group-name {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.cmd-list {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r);
+  transition: background 0.15s;
+  cursor: default;
+}
+
+.cmd-item:hover {
+  background: var(--bg-3);
+}
+
+.cmd-item.hidden { display: none; }
+
+.cmd-slug {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+.cmd-summary {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+/* ─── RULES ─────────────────────────────────────────────── */
+.rules-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 800px;
+}
+
+.rule-domain {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.rule-domain-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.rule-domain-header:hover { background: var(--bg-card-h); }
+
+.rule-domain-icon { font-size: 20px; }
+
+.rule-domain-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+  flex: 1;
+  letter-spacing: 0.03em;
+}
+
+.rule-domain-count {
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.rule-chevron {
+  font-size: 10px;
+  color: var(--text-2);
+  transition: transform 0.25s;
+}
+
+.rule-domain.open .rule-chevron { transform: rotate(180deg); }
+
+.rule-files {
+  display: none;
+  padding: 4px 20px 16px;
+  gap: 8px;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.rule-domain.open .rule-files { display: flex; }
+
+.rule-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-top: 8px;
+}
+
+.rule-file-icon {
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.rule-file-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.03em;
+}
+
+.rule-file-desc {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-left: auto;
+  text-align: right;
+}
+
+/* ─── FOOTER ────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-1);
+  position: relative;
+  z-index: 1;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+.footer-sub {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.footer-sub .pci-warn {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.gh-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--amber);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--amber-d);
+  padding: 8px 18px;
+  border-radius: var(--r);
+  background: var(--amber-glow2);
+  transition: all 0.2s;
+}
+
+.gh-link:hover {
+  background: var(--amber);
+  color: var(--bg-0);
+}
+
+.footer-version {
+  font-size: 10px;
+  color: var(--text-2);
+  letter-spacing: 0.1em;
+}
+
+/* ─── ANIMATIONS ────────────────────────────────────────── */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── EMPTY STATE ───────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.empty-icon { font-size: 32px; margin-bottom: 12px; }
+
+/* ─── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { padding: 48px 20px 40px; }
+  .content { padding: 24px 20px 60px; }
+  .nav { padding: 0 12px; }
+  .nav-tab { padding: 14px 14px; font-size: 11px; }
+  .cards-grid, .skills-grid, .cmd-groups { grid-template-columns: 1fr; }
+  .stats { gap: 20px; }
+  .footer-inner { flex-direction: column; }
+  .footer-right { align-items: flex-start; }
+  h1 { font-size: 24px; }
+  .install-wrap { flex-direction: column; align-items: stretch; }
+}
+
+/* ─── SECTION TRANSITION ────────────────────────────────── */
+.section.active {
+  animation: fadeIn 0.3s ease both;
+}
+
+/* ─── SECTION TITLE ─────────────────────────────────────── */
+.section-head {
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 6px;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-tag">Claude Code Plugin · v1.0.0 · MIT</div>
+
+  <h1>
+    <span class="logo-bracket">[</span><span class="logo-name">claude-code-</span><span class="logo-accent">fintech</span><span class="logo-name">-stack</span><span class="logo-bracket">]</span>
+  </h1>
+
+  <p class="hero-tagline">Battle-tested Claude Code plugin for fintech and payment engineering</p>
+
+  <p class="hero-stack">
+    PHP/Laravel <span>·</span> Go <span>·</span> ISO 8583 <span>·</span> Vue/React <span>·</span> Node.js/Bun <span>·</span> PCI-DSS
+  </p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">24</div><div class="stat-label">Agents</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Skills</div></div>
+    <div class="stat"><div class="stat-num">34</div><div class="stat-label">Commands</div></div>
+    <div class="stat"><div class="stat-num">13</div><div class="stat-label">Rule Files</div></div>
+  </div>
+
+  <div class="install-wrap">
+    <div class="install-box">
+      <span class="install-prompt">$</span>
+      <span class="install-cmd" id="install-cmd">claude mcp add github.com/PuvaanRaaj/claude-code-fintech-stack</span>
+    </div>
+    <button class="btn-copy" onclick="copyInstall()">Copy</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <button class="nav-tab active" data-tab="agents">
+      Agents <span class="nav-count">24</span>
+    </button>
+    <button class="nav-tab" data-tab="skills">
+      Skills <span class="nav-count">8</span>
+    </button>
+    <button class="nav-tab" data-tab="commands">
+      Commands <span class="nav-count">34</span>
+    </button>
+    <button class="nav-tab" data-tab="rules">
+      Rules <span class="nav-count">13</span>
+    </button>
+  </nav>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ═══ AGENTS ═══ -->
+  <div class="section active" id="tab-agents">
+    <div class="section-head">
+      <div class="section-title">// Agents</div>
+      <div class="section-desc">Specialist agents that understand payment protocols, banking standards, and fintech gotchas. Invoke via <code style="color:var(--amber)">claude agent &lt;name&gt;</code> or reference in prompts.</div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="agent-search" type="text" placeholder="Search agents..." oninput="filterAgents()">
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all" onclick="setAgentFilter(this,'all')">All</button>
+        <button class="filter-btn" data-filter="Language Specialist" onclick="setAgentFilter(this,'Language Specialist')">Language</button>
+        <button class="filter-btn" data-filter="Domain Expert" onclick="setAgentFilter(this,'Domain Expert')">Domain</button>
+        <button class="filter-btn" data-filter="Process Orchestrator" onclick="setAgentFilter(this,'Process Orchestrator')">Orchestrator</button>
+      </div>
+    </div>
+
+    <div class="results-count" id="agent-count"></div>
+
+    <div class="cards-grid" id="agents-grid">
+
+      <div class="card" data-cat="Language Specialist">
+        <div class="card-header">
+          <span class="card-name">php-laravel-agent</span>
+          <span class="badge badge-lang">Language</span>
+        </div>
+        <p class="card-desc">PHP 8.3+/Laravel 11+ specialist for production-quality code with strict types, return types, and PCI-DSS awareness across service layers.</p>
+      </div>
+
+      <div class="card" data-cat="Language Specialist">
+        <div class="card-header">
+          <span class="card-name">go-agent</span>
+          <span class="badge badge-lang">Language</span>
+        </div>
+        <p class="card-desc">Go 1.22+ specialist for idiomatic, production-quality Go code with proper error handling, interface design, and concurrency patterns.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">iso8583-agent</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">ISO 8583 payment protocol specialist at the byte level — bitmap parsing, MTI codes, EMV TLV data, and field encoding requirements.</p>
+      </div>
+
+      <div class="card" data-cat="Language Specialist">
+        <div class="card-header">
+          <span class="card-name">frontend-agent</span>
+          <span class="badge badge-lang">Language</span>
+        </div>
+        <p class="card-desc">Vue 3 + React 18 + Vite 5 specialist for complete production components with PCI-safe payment form patterns and accessibility.</p>
+      </div>
+
+      <div class="card" data-cat="Language Specialist">
+        <div class="card-header">
+          <span class="card-name">node-bun-agent</span>
+          <span class="badge badge-lang">Language</span>
+        </div>
+        <p class="card-desc">Node.js 22 and Bun 1.x specialist for TypeScript with strict mode, ESM, full type coverage, and runtime-specific optimization.</p>
+      </div>
+
+      <div class="card" data-cat="Language Specialist">
+        <div class="card-header">
+          <span class="card-name">ai-integration-agent</span>
+          <span class="badge badge-lang">Language</span>
+        </div>
+        <p class="card-desc">Claude API/Anthropic SDK specialist for streaming responses, tool use, system prompts, and token budget management.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">architect</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">System architecture specialist for payment systems — analyzes existing architecture and designs principled, scalable solutions.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">planner</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Expert planning specialist creating comprehensive, actionable implementation plans with phases, risks, and dependencies before code is written.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">code-reviewer</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Senior code reviewer enforcing high standards of quality, security, and payment-specific correctness with structured severity tables.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">security-reviewer</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Security specialist and PCI-DSS auditor reviewing code for OWASP Top 10 vulnerabilities and compliance gaps in payment handling.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">database-reviewer</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Database design and query specialist for Laravel/Eloquent and raw SQL with performance optimization and PCI data-at-rest focus.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">tdd-guide</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">TDD specialist guiding the Red → Green → Refactor cycle for PHP/Laravel, Go, and JavaScript with payment-domain test fixtures.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">doc-updater</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Documentation maintenance specialist keeping README, Swagger, CLAUDE.md, CHANGELOG, and inline comments in sync after code changes.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">chief-of-staff</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">High-level task orchestrator that breaks large features into subtasks and delegates to specialist agents in the right sequence.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">incident-responder</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Payment incident response specialist for outage triage, scope assessment, rollback decisions, and merchant impact escalation.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">refactor-cleaner</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Code refactoring specialist cleaning technical debt, reducing duplication, and improving structure without changing behaviour.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">build-error-resolver</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Build error specialist for PHP/Composer, Go modules, npm/Bun, and Docker — diagnoses root causes and fixes them fast.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">e2e-runner</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">End-to-end test specialist writing and debugging Playwright tests for payment flows and checkout sequences with PCI-safe test cards.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">performance-optimizer</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Performance analysis specialist diagnosing bottlenecks using profiling data and applying targeted fixes — never premature optimizations.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">settlement-agent</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Payment settlement specialist generating batches, validating against the transaction database, and flagging amount/count variances.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">3ds-agent</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">3DS2 authentication specialist for flow design, ECI/CAVV interpretation, ACS connectivity, and liability-shift verification.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">php-build-resolver</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">PHP/Composer/Laravel build error specialist diagnosing Composer conflicts, artisan failures, and migration issues to unblock CI fast.</p>
+      </div>
+
+      <div class="card" data-cat="Process Orchestrator">
+        <div class="card-header">
+          <span class="card-name">docs-lookup</span>
+          <span class="badge badge-proc">Orchestrator</span>
+        </div>
+        <p class="card-desc">Documentation research specialist finding accurate answers from official sources — Laravel, Go stdlib, ISO specs — always with citations.</p>
+      </div>
+
+      <div class="card" data-cat="Domain Expert">
+        <div class="card-header">
+          <span class="card-name">loop-operator</span>
+          <span class="badge badge-domain">Domain</span>
+        </div>
+        <p class="card-desc">Batch processing and loop orchestration specialist for safe, idempotent, recoverable batch payment jobs with checkpoint/resume patterns.</p>
+      </div>
+
+    </div><!-- /agents-grid -->
+  </div><!-- /tab-agents -->
+
+
+  <!-- ═══ SKILLS ═══ -->
+  <div class="section" id="tab-skills">
+    <div class="section-head">
+      <div class="section-title">// Skills</div>
+      <div class="section-desc">Skills auto-activate when your prompt matches a trigger phrase — no slash command needed. They run transparently in the background.</div>
+    </div>
+
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-name">ai-prompt-review</div>
+        <p class="skill-desc">Reviews prompts for PCI violations (card data), injection risks, token bloat, and Claude API best practices before sending to the model.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">review this prompt</span>
+          <span class="trigger-tag">check my system prompt</span>
+          <span class="trigger-tag">prompt review</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">bun-run</div>
+        <p class="skill-desc">Manages Bun package and script operations with lockfile conflict resolution, dependency issue diagnosis, and bun.lock repair.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">bun install</span>
+          <span class="trigger-tag">bun run</span>
+          <span class="trigger-tag">bun test</span>
+          <span class="trigger-tag">bun error</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">db-migrate</div>
+        <p class="skill-desc">Runs Laravel migrations safely — checks the environment, detects destructive changes (DROP, TRUNCATE), and validates rollback path.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">run migration</span>
+          <span class="trigger-tag">migrate database</span>
+          <span class="trigger-tag">rollback migration</span>
+          <span class="trigger-tag">create migration</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">go-lint</div>
+        <p class="skill-desc">Runs gofmt + golangci-lint on changed files, parses results, and auto-fixes formatting issues. Reports remaining lint errors with line numbers.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">lint go</span>
+          <span class="trigger-tag">go lint</span>
+          <span class="trigger-tag">fix go style</span>
+          <span class="trigger-tag">gofmt</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">go-test</div>
+        <p class="skill-desc">Runs Go tests with the race detector enabled, parses test failures, diagnoses root cause, and offers targeted code fixes.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">run go tests</span>
+          <span class="trigger-tag">go test failing</span>
+          <span class="trigger-tag">fix go test</span>
+          <span class="trigger-tag">go test ./...</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">iso8583-parse</div>
+        <p class="skill-desc">Decodes ISO 8583 hex strings into human-readable field maps, including full EMV TLV parsing for Field 55 chip data.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">parse this ISO message</span>
+          <span class="trigger-tag">decode this hex</span>
+          <span class="trigger-tag">what does this message mean</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">payment-sign</div>
+        <p class="skill-desc">Generates and verifies MD5-based payment gateway API signatures with sensitive key masking. Supports common hash ordering patterns.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">generate signature</span>
+          <span class="trigger-tag">verify hash</span>
+          <span class="trigger-tag">signature mismatch</span>
+          <span class="trigger-tag">payment hash</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-name">vue-component</div>
+        <p class="skill-desc">Scaffolds Vue 3 Composition API components following project conventions — forms, lists, modals, and PCI-safe payment UI patterns.</p>
+        <div class="trigger-label">Trigger phrases</div>
+        <div class="triggers">
+          <span class="trigger-tag">create component</span>
+          <span class="trigger-tag">Vue component</span>
+          <span class="trigger-tag">scaffold Vue</span>
+          <span class="trigger-tag">add form</span>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-skills -->
+
+
+  <!-- ═══ COMMANDS ═══ -->
+  <div class="section" id="tab-commands">
+    <div class="section-head">
+      <div class="section-title">// Commands</div>
+      <div class="section-desc">Manually invoked via <code style="color:var(--amber)">/command-name</code> in Claude Code. Each command runs a structured workflow tailored to payment engineering.</div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="cmd-search" type="text" placeholder="Filter commands..." oninput="filterCommands()">
+      </div>
+    </div>
+
+    <div class="cmd-groups" id="cmd-groups">
+
+      <div class="cmd-group" data-group="Code Quality">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">🔍</span>
+          <span class="cmd-group-name">Code Quality</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/code-review</span><span class="cmd-summary">Review staged changes with severity table and merge verdict</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/php-review</span><span class="cmd-summary">PHP/Laravel code review: strict_types, PCI rules, Pint compliance</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/go-review</span><span class="cmd-summary">Go code review: gofmt, vet, error handling, goroutine hygiene</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/frontend-review</span><span class="cmd-summary">Vue/React/Vite review: accessibility, PCI forms, bundle efficiency</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/pci-review</span><span class="cmd-summary">PCI-DSS compliance review: card data handling, logging, encryption</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/security-review</span><span class="cmd-summary">Security review covering OWASP Top 10 + payment-specific issues</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/quality-gate</span><span class="cmd-summary">Full gate: lint, test, security scan — must pass before merge</span></div>
+        </div>
+      </div>
+
+      <div class="cmd-group" data-group="Testing">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">🧪</span>
+          <span class="cmd-group-name">Testing</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/tdd</span><span class="cmd-summary">Start TDD cycle: write failing test → implement → verify green</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/php-test</span><span class="cmd-summary">Run PHPUnit, parse failures, diagnose root cause, offer fixes</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/go-test</span><span class="cmd-summary">Run Go tests with race detector, targeted fix suggestions</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/e2e</span><span class="cmd-summary">Write/run Playwright E2E tests for payment flows with test cards</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/load-test</span><span class="cmd-summary">Generate k6 load test plan with TPS ramp and p95/p99 reporting</span></div>
+        </div>
+      </div>
+
+      <div class="cmd-group" data-group="Build & Fix">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">🔧</span>
+          <span class="cmd-group-name">Build &amp; Fix</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/build-fix</span><span class="cmd-summary">Diagnose and fix build errors for PHP, Go, npm/bun, or Docker</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/go-build</span><span class="cmd-summary">Fix Go build errors: module issues, missing imports, type mismatches</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/db-migrate</span><span class="cmd-summary">Run Laravel migrations with env check and rollback on failure</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/docker-build</span><span class="cmd-summary">Build Docker image with multi-arch support (amd64 + arm64)</span></div>
+        </div>
+      </div>
+
+      <div class="cmd-group" data-group="Docs & Planning">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">📐</span>
+          <span class="cmd-group-name">Docs &amp; Planning</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/plan</span><span class="cmd-summary">Plan feature with phases, risks, dependencies, success criteria</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/spec</span><span class="cmd-summary">Draft tech spec from one-liner: requirements, API design, test plan</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/docs</span><span class="cmd-summary">Update docs after code changes: Swagger, README, CHANGELOG</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/update-docs</span><span class="cmd-summary">Sweep changed files and update all related documentation</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/changelog</span><span class="cmd-summary">Generate changelog from recent commits by feat/fix/chore/security</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/onboard</span><span class="cmd-summary">Generate onboarding documentation from codebase context</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/learn</span><span class="cmd-summary">Extract reusable pattern from current work, save to skills/memory</span></div>
+        </div>
+      </div>
+
+      <div class="cmd-group" data-group="Payment Domain">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">💳</span>
+          <span class="cmd-group-name">Payment Domain</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/iso8583-decode</span><span class="cmd-summary">Decode ISO 8583 hex: MTI, bitmap fields, F55 EMV TLV breakdown</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/payment-trace</span><span class="cmd-summary">Trace payment flow from HTTP request to socket send through codebase</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/settlement-check</span><span class="cmd-summary">Validate today's settlement batch against transaction DB, flag variances</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/incident</span><span class="cmd-summary">Start payment outage runbook: error rates, merchant scope, host health</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/migration-reviewer</span><span class="cmd-summary">Review API migration MR comparing new controller vs legacy PHP responses</span></div>
+        </div>
+      </div>
+
+      <div class="cmd-group" data-group="Dev Workflow">
+        <div class="cmd-group-header">
+          <span class="cmd-group-icon">⚙️</span>
+          <span class="cmd-group-name">Dev Workflow</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item"><span class="cmd-slug">/setup</span><span class="cmd-summary">Set up local dev: composer install, bun install, .env, migrations, seed</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/verify</span><span class="cmd-summary">Full verification: build, lint, test, security scan → READY/NOT READY</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/refactor-clean</span><span class="cmd-summary">Clean code: reduce duplication, extract services, remove dead code</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/checkpoint</span><span class="cmd-summary">Create a git checkpoint commit with descriptive message during TDD</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/save-session</span><span class="cmd-summary">Save session learnings to memory: patterns, decisions, gotchas</span></div>
+          <div class="cmd-item"><span class="cmd-slug">/context-budget</span><span class="cmd-summary">Check token usage and suggest context compression if near limits</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-commands -->
+
+
+  <!-- ═══ RULES ═══ -->
+  <div class="section" id="tab-rules">
+    <div class="section-head">
+      <div class="section-title">// Rules</div>
+      <div class="section-desc">Coding standards and domain knowledge organized by language and domain. Loaded as context to enforce conventions consistently across agents and commands.</div>
+    </div>
+
+    <div class="rules-sections">
+
+      <div class="rule-domain" id="rule-php">
+        <div class="rule-domain-header" onclick="toggleRule('rule-php')">
+          <span class="rule-domain-icon">🐘</span>
+          <span class="rule-domain-name">PHP</span>
+          <span class="rule-domain-count">3 files</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-files">
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/php/laravel.md</span>
+            <span class="rule-file-desc">Laravel 11+ conventions, Eloquent, service architecture</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/php/style.md</span>
+            <span class="rule-file-desc">strict_types, return types, naming conventions, Pint</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/php/pci.md</span>
+            <span class="rule-file-desc">PCI-DSS compliance for payment data, logging, encryption</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-domain" id="rule-go">
+        <div class="rule-domain-header" onclick="toggleRule('rule-go')">
+          <span class="rule-domain-icon">🐹</span>
+          <span class="rule-domain-name">Go</span>
+          <span class="rule-domain-count">2 files</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-files">
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/go/error-handling.md</span>
+            <span class="rule-file-desc">Error wrapping, context propagation, idiomatic patterns</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/go/idioms.md</span>
+            <span class="rule-file-desc">Accept interfaces/return concretes, receivers, channels</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-domain" id="rule-js">
+        <div class="rule-domain-header" onclick="toggleRule('rule-js')">
+          <span class="rule-domain-icon">⚡</span>
+          <span class="rule-domain-name">JavaScript / Frontend</span>
+          <span class="rule-domain-count">3 files</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-files">
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/javascript/vue.md</span>
+            <span class="rule-file-desc">Vue 3 Composition API, script setup, PCI-safe forms</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/javascript/react.md</span>
+            <span class="rule-file-desc">React 18 hooks, server components, form handling patterns</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/javascript/vite.md</span>
+            <span class="rule-file-desc">Vite 5 config, plugins, build optimization, chunk splitting</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-domain" id="rule-node">
+        <div class="rule-domain-header" onclick="toggleRule('rule-node')">
+          <span class="rule-domain-icon">🟢</span>
+          <span class="rule-domain-name">Node.js</span>
+          <span class="rule-domain-count">2 files</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-files">
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/node/esm.md</span>
+            <span class="rule-file-desc">ECMAScript modules, package.json config, import/export</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/node/bun.md</span>
+            <span class="rule-file-desc">Bun runtime specifics, Bun.serve, Bun.file, Bun shell</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-domain" id="rule-domain">
+        <div class="rule-domain-header" onclick="toggleRule('rule-domain')">
+          <span class="rule-domain-icon">🏦</span>
+          <span class="rule-domain-name">Payment Domain</span>
+          <span class="rule-domain-count">3 files</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-files">
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/iso8583/bitmap-fields.md</span>
+            <span class="rule-file-desc">ISO 8583 message structure, MTI codes, bitmap encoding</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/3ds.md</span>
+            <span class="rule-file-desc">3DS2 flows, ECI/CAVV interpretation, ACS integration, liability shift</span>
+          </div>
+          <div class="rule-file">
+            <span class="rule-file-icon">📄</span>
+            <span class="rule-file-name">rules/settlement.md</span>
+            <span class="rule-file-desc">Settlement batch generation, reconciliation, T+1, variance handling</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-rules -->
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-title">claude-code-fintech-stack</div>
+      <div class="footer-sub">
+        Built for fintech teams building production payment systems.<br>
+        <span class="pci-warn">⚠ Never log PAN/CVV/Track data.</span> Hook scripts block raw card data writes on every file save.
+      </div>
+    </div>
+    <div class="footer-right">
+      <a class="gh-link" href="https://github.com/PuvaanRaaj/claude-code-fintech-stack" target="_blank" rel="noopener">
+        ↗ GitHub
+      </a>
+      <div class="footer-version">v1.0.0 · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── TAB SWITCHING ──────────────────────────────────────
+const tabs = document.querySelectorAll('.nav-tab');
+const sections = document.querySelectorAll('.section');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    tabs.forEach(t => t.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+  });
+});
+
+// ─── AGENT FILTER / SEARCH ──────────────────────────────
+let agentFilter = 'all';
+
+function setAgentFilter(btn, filter) {
+  agentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterAgents();
+}
+
+function filterAgents() {
+  const q = document.getElementById('agent-search').value.toLowerCase();
+  const cards = document.querySelectorAll('#agents-grid .card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const name = card.querySelector('.card-name').textContent.toLowerCase();
+    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+    const cat  = card.dataset.cat;
+
+    const matchesFilter = agentFilter === 'all' || cat === agentFilter;
+    const matchesSearch = !q || name.includes(q) || desc.includes(q) || cat.toLowerCase().includes(q);
+
+    if (matchesFilter && matchesSearch) {
+      card.style.display = '';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const countEl = document.getElementById('agent-count');
+  countEl.innerHTML = visible === 24
+    ? 'Showing all <b>24</b> agents'
+    : `Showing <b>${visible}</b> of 24 agents`;
+}
+
+// Init count
+filterAgents();
+
+// ─── COMMAND SEARCH ─────────────────────────────────────
+function filterCommands() {
+  const q = document.getElementById('cmd-search').value.toLowerCase();
+  const items = document.querySelectorAll('.cmd-item');
+
+  items.forEach(item => {
+    const slug = item.querySelector('.cmd-slug').textContent.toLowerCase();
+    const summary = item.querySelector('.cmd-summary').textContent.toLowerCase();
+    item.classList.toggle('hidden', q !== '' && !slug.includes(q) && !summary.includes(q));
+  });
+
+  // Hide empty groups
+  document.querySelectorAll('.cmd-group').forEach(group => {
+    const anyVisible = [...group.querySelectorAll('.cmd-item')].some(i => !i.classList.contains('hidden'));
+    group.style.display = anyVisible ? '' : 'none';
+  });
+}
+
+// ─── RULES ACCORDION ────────────────────────────────────
+function toggleRule(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// Open first by default
+document.getElementById('rule-php').classList.add('open');
+
+// ─── COPY INSTALL ────────────────────────────────────────
+function copyInstall() {
+  const cmd = document.getElementById('install-cmd').textContent;
+  navigator.clipboard.writeText(cmd).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
